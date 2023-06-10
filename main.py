@@ -18,6 +18,22 @@ while running:
     # flip() the display to put your work on screen
     pygame.display.flip()
 
+    # Board setup
+    black = (0, 0, 0)
+    white = (255, 255, 255)
+    colour = 1
+    for x in range(9):
+        for y in range(9):
+            if colour == 0:
+                pygame.draw.rect(screen, black, (0 + (64 * x), 0 + (64 * y), 64, 64))
+                colour = 1
+            else:
+                pygame.draw.rect(screen, white, (0 + (64 * x), 0 + (64 * y), 64, 64))
+                colour = 0
+
+
+
+
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
