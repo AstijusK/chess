@@ -1,5 +1,7 @@
 # Example file showing a circle moving on screen
 import pygame
+
+from Piece import Piece
 from Board import Board
 
 # pygame setup
@@ -42,8 +44,6 @@ while running:
     w_king = pygame.image.load('res/white/king.png')
     w_queen = pygame.image.load('res/white/queen.png')
 
-
-
     # Drawing the board
     for x in range(9):
         for y in range(9):
@@ -58,34 +58,78 @@ while running:
     for x in range(0, len(board.squares)):
         for y in range(0, len(board.squares)):
 
-            match Board.States(board.squares[x][y]):
+            match Board.squares[x][y].PieceType:
                 # White
-                case Board.States.W_PAWN:
+                case Piece.Type.W_PAWN:
                     screen.blit(w_pawn, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.W_KNIGHT:
+                case Piece.Type.W_KNIGHT:
                     screen.blit(w_knight, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.W_BISHOP:
+                case Piece.Type.W_BISHOP:
                     screen.blit(w_bishop, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.W_ROOK:
+                case Piece.Type.W_ROOK:
                     screen.blit(w_rook, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.W_QUEEN:
-                    screen.blit(w_queen, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.W_KING:
+                case Piece.Type.W_KING:
                     screen.blit(w_king, (0 + (64 * y), 0 + (64 * x)))
+                case Piece.Type.W_QUEEN:
+                    screen.blit(w_queen, (0 + (64 * y), 0 + (64 * x)))
 
                 # Black
-                case Board.States.B_PAWN:
+                case Piece.Type.B_PAWN:
                     screen.blit(b_pawn, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.B_KNIGHT:
+                case Piece.Type.B_KNIGHT:
                     screen.blit(b_knight, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.B_BISHOP:
+                case Piece.Type.B_BISHOP:
                     screen.blit(b_bishop, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.B_ROOK:
+                case Piece.Type.B_ROOK:
                     screen.blit(b_rook, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.B_QUEEN:
-                    screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
-                case Board.States.B_KING:
+                case Piece.Type.B_KING:
                     screen.blit(b_king, (0 + (64 * y), 0 + (64 * x)))
+                case Piece.Type.B_QUEEN:
+                    screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
+
+
+
+            # match Board.States(board.squares[x][y]):
+            #     # White
+            #     # case Board.States.W_PAWN:
+            #
+            #     case Board.States.W_KNIGHT:
+            #
+            #
+            #
+            #     case Board.States.W_ROOK:
+            #         screen.blit(w_rook, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.W_QUEEN:
+            #         screen.blit(w_queen, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.W_KING:
+            #         screen.blit(w_king, (0 + (64 * y), 0 + (64 * x)))
+            #
+            #     # Black
+            #     case Board.States.B_PAWN:
+            #         screen.blit(b_pawn, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.B_KNIGHT:
+            #         screen.blit(b_knight, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.B_BISHOP:
+            #         screen.blit(b_bishop, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.B_ROOK:
+            #         screen.blit(b_rook, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.B_QUEEN:
+            #         screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
+            #     case Board.States.B_KING:
+            #         screen.blit(b_king, (0 + (64 * y), 0 + (64 * x)))
+
+    # Handling piece movement
+        # Method 1: Click once on piece to move, click again on destination square
+        # Method 2: Mouse hold and drag a piece from starting square to destination square
+
+    # Steps
+        # Get coordinate position of mouse on-click
+        # Calculate starter square is being pressed from coordinates of mouse on-click
+        # Calculate destination square from coordinates of mouse on-click
+        #
+
+
+
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
