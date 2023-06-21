@@ -3,6 +3,7 @@ import pygame
 
 from Piece import Piece
 from Board import Board
+import math
 
 # pygame setup
 pygame.init()
@@ -11,12 +12,23 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
+selected = False
+piece_to_move = None
+target_square = None
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if pygame.mouse.get_pressed()[0]:
+            mouse_pos = pygame.mouse.get_pos()
+            square_x = math.trunc(mouse_pos[0] / 64)
+            square_y = math.trunc(mouse_pos[1] / 64)
+            Board.squares[square_y][square_x] = Piece(0)
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()
@@ -26,6 +38,7 @@ while running:
     dark = (125, 135, 150)
     light = (232, 235, 239)
     colour = 1
+    selected = False
 
     # Sprite loading
     # BLACK PIECES
@@ -87,37 +100,6 @@ while running:
                 case Piece.Type.B_QUEEN:
                     screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
 
-
-
-            # match Board.States(board.squares[x][y]):
-            #     # White
-            #     # case Board.States.W_PAWN:
-            #
-            #     case Board.States.W_KNIGHT:
-            #
-            #
-            #
-            #     case Board.States.W_ROOK:
-            #         screen.blit(w_rook, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.W_QUEEN:
-            #         screen.blit(w_queen, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.W_KING:
-            #         screen.blit(w_king, (0 + (64 * y), 0 + (64 * x)))
-            #
-            #     # Black
-            #     case Board.States.B_PAWN:
-            #         screen.blit(b_pawn, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.B_KNIGHT:
-            #         screen.blit(b_knight, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.B_BISHOP:
-            #         screen.blit(b_bishop, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.B_ROOK:
-            #         screen.blit(b_rook, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.B_QUEEN:
-            #         screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
-            #     case Board.States.B_KING:
-            #         screen.blit(b_king, (0 + (64 * y), 0 + (64 * x)))
-
     # Handling piece movement
         # Method 1: Click once on piece to move, click again on destination square
         # Method 2: Mouse hold and drag a piece from starting square to destination square
@@ -126,7 +108,10 @@ while running:
         # Get coordinate position of mouse on-click
         # Calculate starter square is being pressed from coordinates of mouse on-click
         # Calculate destination square from coordinates of mouse on-click
-        #
+
+    # Don't worry about if move is legal yet, just get the positioning of pieces right.
+
+
 
 
 
