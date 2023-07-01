@@ -17,7 +17,8 @@ class Piece:
         B_KING = 11
         B_QUEEN = 12
 
-    def __init__(self, piece_type, selected=False):
-        self.PieceType = Piece.Type(piece_type)
-        self.Selected = selected
+    legal_moves = []
 
+    def __init__(self, piece_type):
+        self.PieceType = Piece.Type(piece_type)
+        self.times_moved = 0
