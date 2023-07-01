@@ -12,9 +12,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-selected = False
+status = 0
 piece_to_move = None
-target_square = None
 
 while running:
     # poll for events
@@ -24,11 +23,28 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if pygame.mouse.get_pressed()[0]:
-            mouse_pos = pygame.mouse.get_pos()
-            square_x = math.trunc(mouse_pos[0] / 64)
-            square_y = math.trunc(mouse_pos[1] / 64)
-            Board.squares[square_y][square_x] = Piece(0)
+            if status == 0:
+                mouse_pos = pygame.mouse.get_pos()
+                square_x = math.trunc(mouse_pos[0] / 64)
+                square_y = math.trunc(mouse_pos[1] / 64)
 
+                if Board.squares[square_y][square_x].PieceType is not Piece.Type.EMPTY:
+                    piece_to_move = Board.squares[square_y][square_x]
+                    status = 1
+                    print("Piece selected: ", piece_to_move.PieceType)
+                else:
+                    print("Can't select empty square")
+            else:
+                mouse_pos2 = pygame.mouse.get_pos()
+                square_x2 = math.trunc(mouse_pos2[0] / 64)
+                square_y2 = math.trunc(mouse_pos2[1] / 64)
+
+                if Board.squares[square_y2][square_x2] is not piece_to_move:
+                    Board.squares[square_y2][square_x2] = piece_to_move
+
+                    Board.squares[square_y][square_x] = Piece(0)
+                    status = 0
+                    print("Placing selected piece")
 
     # flip() the display to put your work on screen
     pygame.display.flip()
