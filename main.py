@@ -3,6 +3,7 @@ import pygame
 
 from Piece import Piece
 from Board import Board
+
 import math
 
 # pygame setup
@@ -15,7 +16,8 @@ dt = 0
 # Keeps track of whether piece a piece has been clicked on and 'primed' for movement
 selected = 0
 piece_to_move = None
-counter = 0
+square_x_difference = None
+square_y_difference = None
 
 while running:
     # poll for events
@@ -40,8 +42,31 @@ while running:
                 square_y2 = math.trunc(mouse_pos2[1] / 64)
 
                 if Board.squares[square_y2][square_x2] is not piece_to_move:
-                    Board.squares[square_y2][square_x2] = piece_to_move
-                    Board.squares[square_y][square_x] = Piece(0)
+                    # Check if move is legal here.
+
+                    # Find vector difference between piece_to_move and target_square?
+                    # If vector difference is not in the list of 'legal_moves' (allowed vector differences),
+                    # move is illegal. Otherwise, make the move
+
+                    if square_x2 > square_x:
+                        square_x_difference = square_x2 - square_x
+                    elif square_x2 < square_x:
+                        square_x_difference = square_x - square_x2
+                    else:
+                        square_x_difference = 0
+
+                    if square_y2 > square_y:
+                        square_y_difference = square_y2 - square_y
+                    elif square_y2 < square_y:
+                        square_y_difference = square_y - square_y2
+                    else:
+                        square_y_difference = 0
+
+                    if (square_x_difference, square_y_difference) in piece_to_move.legal_moves:
+                        Board.squares[square_y2][square_x2] = piece_to_move
+                        Board.squares[square_y][square_x] = Piece(0)
+                    else:
+                        print("illegal move")
                 selected = 0
 
     # flip() the display to put your work on screen
@@ -115,8 +140,6 @@ while running:
     # Handling piece movement
         # Method 1: Click once on piece to move, click again on destination square [DONE]
         # Method 2: Mouse hold and drag a piece from starting square to destination square
-
-
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
