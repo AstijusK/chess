@@ -17,8 +17,7 @@ class Piece:
         B_KING = 11
         B_QUEEN = 12
 
-    legal_moves = []
-
     def __init__(self, piece_type):
         self.PieceType = Piece.Type(piece_type)
         self.times_moved = 0
+        self.legal_moves = []

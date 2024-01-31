@@ -16,6 +16,12 @@ dt = 0
 # Keeps track of whether piece a piece has been clicked on and 'primed' for movement
 selected = 0
 piece_to_move = None
+
+square_x = None
+square_x2 = None
+square_y = None
+square_y2 = None
+
 square_x_difference = None
 square_y_difference = None
 
@@ -33,14 +39,26 @@ while running:
                 square_x = math.trunc(mouse_pos[0] / 64)
                 square_y = math.trunc(mouse_pos[1] / 64)
 
+                # Identifying the square clicked on (works)
+                print("x: " + str(square_x+1) + " y: " + str(square_y+1))
+
+                # Identifying the piece clicked on (works)
+                print(Board.squares[square_y][square_x].PieceType)
+
                 if Board.squares[square_y][square_x].PieceType is not Piece.Type.EMPTY:
                     piece_to_move = Board.squares[square_y][square_x]
+                    print(piece_to_move.legal_moves)
                     selected = 1
+                    print(selected)
             else:
                 mouse_pos2 = pygame.mouse.get_pos()
                 square_x2 = math.trunc(mouse_pos2[0] / 64)
                 square_y2 = math.trunc(mouse_pos2[1] / 64)
 
+                print("x: " + str(square_x2 + 1) + " y: " + str(square_y2 + 1))
+                print(Board.squares[square_y2][square_x2].PieceType)
+
+                # If the destination square is not the same as the starting square
                 if Board.squares[square_y2][square_x2] is not piece_to_move:
                     # Check if move is legal here.
 
@@ -67,7 +85,11 @@ while running:
                         Board.squares[square_y][square_x] = Piece(0)
                     else:
                         print("illegal move")
+                        print(piece_to_move.legal_moves)
+                else:
+                    print("destination square is same as starting square")
                 selected = 0
+                print(selected)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
