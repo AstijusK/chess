@@ -6,6 +6,9 @@ from Board import Board
 
 import math
 
+# Debug state - shout out to my lecturer Brian Tompset - this is where I got the debug idea from. Makes code cleaner.
+debug = True
+
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((512, 512))
@@ -17,13 +20,35 @@ dt = 0
 selected = 0
 piece_to_move = None
 
-square_x = None
-square_x2 = None
-square_y = None
-square_y2 = None
 
-square_x_difference = None
-square_y_difference = None
+def get_mouse_pos():
+    mp = pygame.mouse.get_pos()
+    sx = math.trunc(mp[0] / 64)
+    sy = math.trunc(mp[1] / 64)
+    return [sx, sy]
+
+
+def calculate_sx_diff(sx, sx2):
+    sx_diff = 0
+    if sx2 > sx:
+        sx_diff = sx2 - sx
+    elif sx2 < sx:
+        sx_diff = sx - sx2
+    else:
+        sx_diff = 0
+    return sx_diff
+
+
+def calculate_sy_diff(sy, sy2):
+    sy_diff = 0
+    if sy2 > sy:
+        sy_diff = sy2 - sy
+    elif sy2 < sy:
+        sy_diff = sy - sy2
+    else:
+        sy_diff = 0
+    return sy_diff
+
 
 while running:
     # poll for events
@@ -35,28 +60,28 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if selected == 0:
-                mouse_pos = pygame.mouse.get_pos()
-                square_x = math.trunc(mouse_pos[0] / 64)
-                square_y = math.trunc(mouse_pos[1] / 64)
+                square_x = get_mouse_pos()[0]
+                square_y = get_mouse_pos()[1]
 
-                # Identifying the square clicked on (works)
-                print("x: " + str(square_x+1) + " y: " + str(square_y+1))
-
-                # Identifying the piece clicked on (works)
-                print(Board.squares[square_y][square_x].PieceType)
-
+                if debug:
+                    # Identifying the square clicked and piece clicked on (works)
+                    print("x: " + str(square_x+1) + " y: " + str(square_y+1))
+                    print(Board.squares[square_y][square_x].PieceType)
                 if Board.squares[square_y][square_x].PieceType is not Piece.Type.EMPTY:
+                    # Call piece.set_pos() here after method is implemented
                     piece_to_move = Board.squares[square_y][square_x]
-                    print(piece_to_move.legal_moves)
                     selected = 1
-                    print(selected)
-            else:
-                mouse_pos2 = pygame.mouse.get_pos()
-                square_x2 = math.trunc(mouse_pos2[0] / 64)
-                square_y2 = math.trunc(mouse_pos2[1] / 64)
 
-                print("x: " + str(square_x2 + 1) + " y: " + str(square_y2 + 1))
-                print(Board.squares[square_y2][square_x2].PieceType)
+                    if debug:
+                        print(piece_to_move.legal_moves)
+                        print(selected)
+            else:
+                square_x2 = get_mouse_pos()[0]
+                square_y2 = get_mouse_pos()[1]
+
+                if debug:
+                    print("x: " + str(square_x2 + 1) + " y: " + str(square_y2 + 1))
+                    print(Board.squares[square_y2][square_x2].PieceType)
 
                 # If the destination square is not the same as the starting square
                 if Board.squares[square_y2][square_x2] is not piece_to_move:
@@ -65,31 +90,22 @@ while running:
                     # Find vector difference between piece_to_move and target_square?
                     # If vector difference is not in the list of 'legal_moves' (allowed vector differences),
                     # move is illegal. Otherwise, make the move
-
-                    if square_x2 > square_x:
-                        square_x_difference = square_x2 - square_x
-                    elif square_x2 < square_x:
-                        square_x_difference = square_x - square_x2
-                    else:
-                        square_x_difference = 0
-
-                    if square_y2 > square_y:
-                        square_y_difference = square_y2 - square_y
-                    elif square_y2 < square_y:
-                        square_y_difference = square_y - square_y2
-                    else:
-                        square_y_difference = 0
+                    square_x_difference = calculate_sx_diff(square_x, square_x2)
+                    square_y_difference = calculate_sy_diff(square_y, square_y2)
 
                     if (square_x_difference, square_y_difference) in piece_to_move.legal_moves:
+                        # Call piece.set_pos() here after method is implemented
                         Board.squares[square_y2][square_x2] = piece_to_move
                         Board.squares[square_y][square_x] = Piece(0)
                     else:
-                        print("illegal move")
-                        print(piece_to_move.legal_moves)
+                        if debug:
+                            print("illegal move")
+                            print(piece_to_move.legal_moves)
                 else:
-                    print("destination square is same as starting square")
+                    if debug:
+                        print("destination square is same as starting square")
+                        print(selected)
                 selected = 0
-                print(selected)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
@@ -160,8 +176,8 @@ while running:
                     screen.blit(b_queen, (0 + (64 * y), 0 + (64 * x)))
 
     # Handling piece movement
-        # Method 1: Click once on piece to move, click again on destination square [DONE]
-        # Method 2: Mouse hold and drag a piece from starting square to destination square
+    # Method 1: Click once on piece to move, click again on destination square [DONE]
+    # Method 2: Mouse hold and drag a piece from starting square to destination square
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-

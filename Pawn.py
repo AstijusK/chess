@@ -10,3 +10,4 @@ class Pawn(Piece):
 
         if self.times_moved > 0:
             self.legal_moves.remove((0, 2))
+

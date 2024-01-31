@@ -4,7 +4,7 @@ from Pawn import Pawn
 from Bishop import Bishop
 from Rook import Rook
 from Knight import Knight
-from King import  King
+from King import King
 from Queen import Queen
 
 
